@@ -1,3 +1,5 @@
+[![Deploy on Bot-Hosting](https://bot-hosting.net/assets/deploy-badge.svg)](https://bot-hosting.net/deploy?source=template&template=discord-login-flow)
+
 # Discord Login Template
 
 An Express template that adds a "Login with Discord" flow (OAuth2) and a protected dashboard page, using plain HTML/CSS/JS on the frontend — no templating engine required.
