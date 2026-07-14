@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+    <div class="dashboard-card" id="dashboard-card" hidden>
+        <div class="dashboard-header">
+            <img id="user-avatar" class="user-avatar" src="" alt="Your avatar">
+            <div>
+                <h1 id="user-name">—</h1>
+                <p id="user-tag" class="subtitle">—</p>
+            </div>
+        </div>
+
+        <div class="info-row">
+            <span class="info-label">User ID</span>
+            <span id="user-id" class="info-value">—</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Email</span>
+            <span id="user-email" class="info-value">—</span>
+        </div>
+
+        <a href="/auth/logout" class="logout-btn">Log out</a>
+    </div>
+
+    <p id="loading-message">Loading your dashboard…</p>
+
+    <script>
+        (async function loadUser() {
+            const loadingEl = document.getElementById('loading-message');
+            try {
+                const res = await fetch('/api/user');
+                if (!res.ok) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                const user = await res.json();
+
+                document.getElementById('user-avatar').src = user.avatarUrl;
+                document.getElementById('user-name').textContent = user.username;
+                document.getElementById('user-tag').textContent = user.discriminator && user.discriminator !== '0'
+                    ? `#${user.discriminator}`
+                    : `@${user.username}`;
+                document.getElementById('user-id').textContent = user.id;
+                document.getElementById('user-email').textContent = user.email || 'Not provided';
+
+                loadingEl.hidden = true;
+                document.getElementById('dashboard-card').hidden = false;
+            } catch (err) {
+                loadingEl.textContent = 'Something went wrong loading your dashboard.';
+            }
+        })();
+    </script>
+
+</body>
+</html>
